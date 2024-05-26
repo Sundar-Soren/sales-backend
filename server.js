@@ -107,6 +107,9 @@ app.get("/sale-orders/completed", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+app.get("/", (req, res) => {
+  return res.json({ message: "Its working" });
+});
 
 // Start server
 const PORT = process.env.PORT || 8000;
