@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const env = require("dotenv");
+const cors = require("cors");
 env.config();
 
 // Initialize Express app
@@ -13,6 +14,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // MongoDB connection
 mongoose
@@ -38,6 +40,24 @@ const saleOrderSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 const SaleOrder = mongoose.model("SaleOrder", saleOrderSchema);
+
+async function createUser(username, password) {
+  try {
+    // Create a new user instance
+    const newUser = new User({
+      username,
+      password,
+    });
+
+    // Save the user to the database
+    const savedUser = await newUser.save();
+    console.log("User created successfully:", savedUser);
+  } catch (error) {
+    console.error("Error creating user:", error);
+  }
+}
+
+// createUser("admin", "123456");
 
 // Routes
 // Authentication endpoint
